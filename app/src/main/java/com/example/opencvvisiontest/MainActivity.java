@@ -22,16 +22,13 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Collections;
 
 public class MainActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
     private static final String TAG = "OCVSample::Activity";
     private CameraBridgeViewBase mOpenCvCameraView;
 
     private Server server;
-    private static Consumer consumer;
+    private Consumer consumer;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -74,6 +71,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
             consumer = new Consumer();
             server = new Server(8888);
             Toast.makeText(getApplicationContext(), Util.getIPAddress(true), Toast.LENGTH_LONG).show();
+            MjpgServer.getInstance().startServer();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,6 +111,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat img = consumer.consume(inputFrame.rgba());
         Imgproc.putText(img, Util.getFPSCount(), new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, new Scalar(255, 255, 255));
+        MjpgServer.getInstance().update(img);
         return img;
     }
 }
