@@ -16,11 +16,6 @@ public class Consumer {
     private Mat threshold;
     private List<MatOfPoint> thresholdContours, contours;
 
-    private double minArea = 0, maxArea = 75;
-    private double minRatio = 0, maxRatio = 100000;
-    private double minWidth = 0, maxWidth = 100000;
-    private double minHeight = 0, maxHeight = 100000;
-
     private ArrayList<Rect> bound = new ArrayList<Rect>();
 
     public Consumer() {
@@ -84,14 +79,14 @@ public class Consumer {
             final Rect bb = Imgproc.boundingRect(contour);
             final double width = bb.width / 320 * 100;
             final double height = bb.height / 240 * 100;
-            if (width < minWidth || width > maxWidth) continue;
-            if (height < minHeight || height > maxHeight) continue;
+            if (width < VisionConstant.minWidth || width > VisionConstant.maxWidth) continue;
+            if (height < VisionConstant.minHeight || height > VisionConstant.maxHeight) continue;
 
             final double area = Imgproc.contourArea(contour) / (320 * 240) * 100;
-            if (area < minArea || area > maxArea) continue;
+            if (area < VisionConstant.minArea || area > VisionConstant.maxArea) continue;
 
             final double ratio = width / (double) height * 10;
-            if (ratio < minRatio || ratio > maxRatio) continue;
+            if (ratio < VisionConstant.minRatio || ratio > VisionConstant.maxRatio) continue;
 
             output.add(contour);
         }
