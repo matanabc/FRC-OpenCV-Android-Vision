@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.example.opencvvisiontest.vision.Consumer;
 
@@ -21,6 +22,9 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Collections;
 
 public class MainActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
     private static final String TAG = "OCVSample::Activity";
@@ -69,6 +73,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         try {
             consumer = new Consumer();
             server = new Server(8888);
+            Toast.makeText(getApplicationContext(), Util.getIPAddress(true), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,20 +110,9 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     public void onCameraViewStopped() {
     }
 
-    int fps = 0, fpsCount = 0;
-    long start = System.currentTimeMillis();
-
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        if (System.currentTimeMillis() - start >= 1000) {
-            fps = fpsCount;
-            fpsCount = 0;
-            start = System.currentTimeMillis();
-        } else {
-            fpsCount++;
-        }
-
         Mat img = consumer.consume(inputFrame.rgba());
-        Imgproc.putText(img, String.valueOf(fps), new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, new Scalar(255, 255, 255));
+        Imgproc.putText(img, Util.getFPSCount(), new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, new Scalar(255, 255, 255));
         return img;
     }
 }
