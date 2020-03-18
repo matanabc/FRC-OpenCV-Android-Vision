@@ -35,6 +35,7 @@ public class VisionConstant {
             thresholdMax = new Scalar(hMax, sMax, vMax);
         }
 
+
         else if(key.equals("showHSV")) showHSV = Boolean.parseBoolean(value);
     }
 }
