@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.example.opencvvisiontest.vision.Consumer;
 
@@ -27,7 +26,8 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     private static final String TAG = "OCVSample::Activity";
     private CameraBridgeViewBase mOpenCvCameraView;
 
-    private Consumer consumer;
+    private Server server;
+    private static Consumer consumer;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -66,7 +66,12 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         mOpenCvCameraView.setMaxFrameSize(320, 240);
         OpenCVLoader.initDebug();
 
-        consumer = new Consumer();
+        try {
+            consumer = new Consumer();
+            server = new Server(8888);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

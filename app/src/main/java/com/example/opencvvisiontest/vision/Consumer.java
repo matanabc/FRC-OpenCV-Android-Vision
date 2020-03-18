@@ -16,20 +16,17 @@ public class Consumer {
     private Mat threshold;
     private List<MatOfPoint> thresholdContours, contours;
 
-    private Scalar thresholdMin, thresholdMax;
+    private double minArea = 0, maxArea = 75;
+    private double minRatio = 0, maxRatio = 100000;
+    private double minWidth = 0, maxWidth = 100000;
+    private double minHeight = 0, maxHeight = 100000;
 
-    private double minArea = 0, maxArea = 100;
-    private double minRatio = 0, maxRatio = 10;
-    private double minWidth = 0, maxWidth = 100;
-    private double minHeight = 0, maxHeight = 100;
+    private ArrayList<Rect> bound = new ArrayList<Rect>();
 
     public Consumer() {
         threshold = new Mat();
         thresholdContours = new ArrayList<MatOfPoint>();
         contours = new ArrayList<MatOfPoint>();
-
-        thresholdMin = new Scalar(25, 0, 0);
-        thresholdMax = new Scalar(200, 255, 255);
     }
 
     public Mat consume(Mat img) {
@@ -40,15 +37,19 @@ public class Consumer {
         findContours(threshold, thresholdContours);
         filterContours(thresholdContours, contours);
 
+        bound.clear();
         for (int i = 0; i < contours.size(); i++) {
             Imgproc.drawContours(img, contours, i, new Scalar(0, 255, 0));
+            Rect r = Imgproc.boundingRect(contours.get(i));
+            bound.add(r);
+            Imgproc.rectangle(img, r.tl(), r.br(), new Scalar(255, 0, 0));//printing
         }
 
-        return threshold;
+        return VisionConstant.showHSV ? threshold : img;
     }
 
     private void threshold(Mat input) {
-        Core.inRange(input, thresholdMin, thresholdMax, input);
+        Core.inRange(input, VisionConstant.thresholdMin, VisionConstant.thresholdMax, input);
     }
 
     private void dilation(Mat input) {
@@ -86,7 +87,7 @@ public class Consumer {
             if (width < minWidth || width > maxWidth) continue;
             if (height < minHeight || height > maxHeight) continue;
 
-            final double area = Imgproc.contourArea(contour);
+            final double area = Imgproc.contourArea(contour) / (320 * 240) * 100;
             if (area < minArea || area > maxArea) continue;
 
             final double ratio = width / (double) height * 10;
