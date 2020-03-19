@@ -71,23 +71,18 @@ public class Consumer {
             final MatOfPoint contour = inputContours.get(i);
 
             final Rect bb = Imgproc.boundingRect(contour);
-            final double width = bb.width / VisionConstant.MAX_FRAME_WIDTH * 100;
-            final double height = bb.height / VisionConstant.MAX_FRAME_HEIGHT * 100;
+            final double width = bb.width / (double) VisionConstant.MAX_FRAME_WIDTH * 100;
+            final double height = bb.height / (double) VisionConstant.MAX_FRAME_HEIGHT * 100;
             if (width < VisionConstant.minWidth || width > VisionConstant.maxWidth) continue;
             if (height < VisionConstant.minHeight || height > VisionConstant.maxHeight) continue;
 
             final double area = Imgproc.contourArea(contour) / (VisionConstant.MAX_FRAME_SIZE) * 100;
             if (area < VisionConstant.minArea || area > VisionConstant.maxArea) continue;
 
-            final double ratio = width / (double) height * 10;
+            final double ratio = width / height * 100;
             if (ratio < VisionConstant.minRatio || ratio > VisionConstant.maxRatio) continue;
 
             output.add(contour);
-
-            Log.d("countour", "area= " + area + "%");
-            Log.d("countour", "width= " + width + "%");
-            Log.d("countour", "height= " + height + "%");
-            Log.d("countour", "ratio= " + ratio + "%");
         }
     }
 }

@@ -22,7 +22,7 @@ public class VisionConstant {
     private static int hMax = 255, sMax = 255, vMax = 255;
 
     public static double minArea = 0, maxArea = 100;
-    public static double minRatio = 0, maxRatio = 10;
+    public static double minRatio = 0, maxRatio = 100;
     public static double minWidth = 0, maxWidth = 100;
     public static double minHeight = 0, maxHeight = 100;
 
@@ -53,7 +53,7 @@ public class VisionConstant {
         maxArea = Double.parseDouble(preferences.getString("maxArea", "100"));
 
         minRatio = Double.parseDouble(preferences.getString("minRatio", "0"));
-        maxRatio = Double.parseDouble(preferences.getString("maxRatio", "10"));
+        maxRatio = Double.parseDouble(preferences.getString("maxRatio", "100"));
 
         minWidth = Double.parseDouble(preferences.getString("minWidth", "0"));
         maxWidth = Double.parseDouble(preferences.getString("maxWidth", "100"));
@@ -106,10 +106,10 @@ public class VisionConstant {
 
         else if (key.equals("minRatio")) {
             minRatio = Double.parseDouble(value);
-            visionPreferencesEditor.putString("minRatio", String.valueOf(maxArea));
+            visionPreferencesEditor.putString("minRatio", String.valueOf(minRatio));
         } else if (key.equals("maxRatio")) {
             maxRatio = Double.parseDouble(value);
-            visionPreferencesEditor.putString("maxRatio", String.valueOf(maxArea));
+            visionPreferencesEditor.putString("maxRatio", String.valueOf(maxRatio));
         }
 
         else if (key.equals("minWidth")) {
