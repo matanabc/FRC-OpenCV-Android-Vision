@@ -1,4 +1,4 @@
-package com.example.opencvvisiontest;
+package com.example.opencvvisiontest.vision.server;
 
 import com.example.opencvvisiontest.vision.VisionConstant;
 
@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import fi.iki.elonen.NanoHTTPD;
 
-public class Server extends NanoHTTPD {
-    public Server(int port) throws IOException {
+public class VisionConstantServer extends NanoHTTPD {
+    public VisionConstantServer(int port) throws IOException {
         super(port);
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
     }
@@ -19,7 +19,6 @@ public class Server extends NanoHTTPD {
             if (session.getMethod() == Method.GET && session.getParameters().size() != 0) {
                 for (String key : session.getParameters().keySet()) {
                     VisionConstant.update(key, session.getParameters().get(key).get(0));
-                    response = newFixedLengthResponse(String.valueOf(VisionConstant.showHSV));
                 }
                 response = newFixedLengthResponse("Update!");
             }

@@ -3,7 +3,6 @@ package com.example.opencvvisiontest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -11,26 +10,27 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.opencvvisiontest.vision.Consumer;
+import com.example.opencvvisiontest.vision.VisionConstant;
+import com.example.opencvvisiontest.vision.server.MjpgServer;
+import com.example.opencvvisiontest.vision.server.VisionConstantServer;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
     private static final String TAG = "OCVSample::Activity";
     private CameraBridgeViewBase mOpenCvCameraView;
 
-    private Server server;
+    private VisionConstantServer server;
     private Consumer consumer;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -71,8 +71,9 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         OpenCVLoader.initDebug();
 
         try {
+            VisionConstant.load(getSharedPreferences("vision", 0));
             consumer = new Consumer();
-            server = new Server(8888);
+            server = new VisionConstantServer(8888);
             Toast.makeText(getApplicationContext(), Util.getIPAddress(true), Toast.LENGTH_LONG).show();
             MjpgServer.getInstance().startServer();
         } catch (IOException e) {
@@ -113,8 +114,8 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
 
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat img = consumer.consume(inputFrame.rgba());
-        Imgproc.putText(img, Util.getFPSCount(), new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, new Scalar(255, 255, 255));
-        MjpgServer.getInstance().update(Util.mat2ByteArray(img));
+        Imgproc.putText(img, Util.getFPSCount(), new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE);
+        MjpgServer.getInstance().sendMat(Util.mat2ByteArray(img));
         return img;
     }
 }

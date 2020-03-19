@@ -1,14 +1,8 @@
-package com.example.opencvvisiontest;
+package com.example.opencvvisiontest.vision.server;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.opencv.android.Utils;
-import org.opencv.core.CvException;
-import org.opencv.core.Mat;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
@@ -16,7 +10,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class MjpgServer {
-
     public static final String K_BOUNDARY = "boundary";
     private static MjpgServer sInst = null;
 
@@ -27,7 +20,6 @@ public class MjpgServer {
     private ServerSocket mServerSocket;
     private boolean mRunning;
     private Thread mRunThread;
-    private Long mLastUpdate = 0L;
 
     private MjpgServer() {
     }
@@ -43,7 +35,7 @@ public class MjpgServer {
         new SendStartServerTask().execute();
     }
 
-    public void update(byte[] buffer) {
+    public void sendMat(byte[] buffer) {
         new SendUpdateTask().execute(buffer);
     }
 
@@ -66,15 +58,12 @@ public class MjpgServer {
     private class SendUpdateTask extends AsyncTask<byte[], Void, Void> {
         @Override
         protected Void doInBackground(byte[]... params) {
-            update(params[0], true);
+            update(params[0]);
             return null;
         }
     }
 
-    private void update(byte[] bytes, boolean updateTimer) {
-        if (updateTimer) {
-            mLastUpdate = System.currentTimeMillis();
-        }
+    private void update(byte[] bytes) {
         synchronized (mLock) {
             ArrayList<Integer> badIndices = new ArrayList<>(mConnections.size());
             for (int i = 0; i < mConnections.size(); i++) {

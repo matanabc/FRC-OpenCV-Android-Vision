@@ -34,10 +34,10 @@ public class Consumer {
 
         bound.clear();
         for (int i = 0; i < contours.size(); i++) {
-            Imgproc.drawContours(img, contours, i, new Scalar(0, 255, 0));
+            Imgproc.drawContours(img, contours, i, VisionConstant.GREEN);
             Rect r = Imgproc.boundingRect(contours.get(i));
             bound.add(r);
-            Imgproc.rectangle(img, r.tl(), r.br(), new Scalar(255, 0, 0));//printing
+            Imgproc.rectangle(img, r.tl(), r.br(), VisionConstant.RED);//printing
         }
 
         return VisionConstant.showHSV ? threshold : img;
