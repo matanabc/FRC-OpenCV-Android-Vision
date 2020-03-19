@@ -1,10 +1,14 @@
 package com.example.opencvvisiontest;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.opencv.android.Utils;
+import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
@@ -39,8 +43,8 @@ public class MjpgServer {
         new SendStartServerTask().execute();
     }
 
-    public void update(Mat img) {
-        new SendUpdateTask().execute(img);
+    public void update(byte[] buffer) {
+        new SendUpdateTask().execute(buffer);
     }
 
     private class SendStartServerTask extends AsyncTask<Void, Void, Void> {
@@ -59,14 +63,10 @@ public class MjpgServer {
         }
     }
 
-    private class SendUpdateTask extends AsyncTask<Mat, Void, Void> {
+    private class SendUpdateTask extends AsyncTask<byte[], Void, Void> {
         @Override
-        protected Void doInBackground(Mat... params) {
-            int length = (int) (params[0].total() * params[0].elemSize());
-            byte buffer[] = new byte[length];
-            params[0].get(0, 0, buffer);
-
-            update(buffer, true);
+        protected Void doInBackground(byte[]... params) {
+            update(params[0], true);
             return null;
         }
     }
@@ -92,7 +92,6 @@ public class MjpgServer {
     }
 
     Runnable runner = new Runnable() {
-
         @Override
         public void run() {
             while (mRunning) {
@@ -128,7 +127,7 @@ public class MjpgServer {
                 Log.i(TAG, "Starting a connection!");
                 OutputStream stream = mSocket.getOutputStream();
                 stream.write(("HTTP/1.0 200 OK\r\n" +
-                        "Server: cheezyvision\r\n" +
+                        "Server: vision\r\n" +
                         "Cache-Control: no-cache\r\n" +
                         "Pragma: no-cache\r\n" +
                         "Connection: close\r\n" +
@@ -142,9 +141,8 @@ public class MjpgServer {
             if (!isAlive()) {
                 return;
             }
-            OutputStream stream = null;
             try {
-                stream = mSocket.getOutputStream();
+                OutputStream stream = mSocket.getOutputStream();
                 stream.write(("\r\n--" + K_BOUNDARY + "\r\n").getBytes());
                 stream.write(("Content-type: image/jpeg\r\n" +
                         "Content-Length: " + buffer.length + "\r\n" +

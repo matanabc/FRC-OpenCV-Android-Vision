@@ -1,5 +1,11 @@
 package com.example.opencvvisiontest;
 
+import android.graphics.Bitmap;
+
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+
+import java.io.ByteArrayOutputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
@@ -52,5 +58,20 @@ public class Util {
             fpsCount++;
         }
         return String.valueOf(fps);
+    }
+
+
+    /**
+     * This function will convert mat to byte[]
+     *
+     * @param img Mat
+     * @return mat as byte[] in jpeg format
+     */
+    public static byte[] mat2ByteArray(Mat img){
+        Bitmap bmp = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(img, bmp);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
     }
 }

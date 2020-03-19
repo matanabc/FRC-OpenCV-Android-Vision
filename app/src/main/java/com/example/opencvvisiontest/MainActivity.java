@@ -3,6 +3,7 @@ package com.example.opencvvisiontest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -15,12 +16,14 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
@@ -111,7 +114,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat img = consumer.consume(inputFrame.rgba());
         Imgproc.putText(img, Util.getFPSCount(), new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, new Scalar(255, 255, 255));
-        MjpgServer.getInstance().update(img);
+        MjpgServer.getInstance().update(Util.mat2ByteArray(img));
         return img;
     }
 }
