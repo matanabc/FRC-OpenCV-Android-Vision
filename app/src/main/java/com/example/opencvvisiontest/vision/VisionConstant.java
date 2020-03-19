@@ -12,6 +12,10 @@ public class VisionConstant {
     public static final Scalar GREEN = new Scalar(0, 255, 0);
     public static final Scalar BLUE = new Scalar(0, 0, 255);
 
+    public static final int MAX_FRAME_WIDTH = 320;
+    public static final int MAX_FRAME_HEIGHT = 240;
+    public static final int MAX_FRAME_SIZE = MAX_FRAME_HEIGHT * MAX_FRAME_WIDTH;
+
     public static boolean showHSV = false;
 
     private static int hMin = 0, sMin = 0, vMin = 0;
@@ -75,21 +79,21 @@ public class VisionConstant {
         else if (key.equals("sMin")) {
             sMin = Integer.parseInt(value);
             thresholdMin = new Scalar(hMin, sMin, vMin);
-            visionPreferencesEditor.putInt("sMin", hMax);
+            visionPreferencesEditor.putInt("sMin", sMin);
         } else if (key.equals("sMax")) {
             sMax = Integer.parseInt(value);
             thresholdMax = new Scalar(hMax, sMax, vMax);
-            visionPreferencesEditor.putInt("sMax", hMax);
+            visionPreferencesEditor.putInt("sMax", sMax);
         }
 
         else if (key.equals("vMin")) {
             vMin = Integer.parseInt(value);
             thresholdMin = new Scalar(hMin, sMin, vMin);
-            visionPreferencesEditor.putInt("vMin", hMax);
+            visionPreferencesEditor.putInt("vMin", vMin);
         } else if (key.equals("vMax")) {
             vMax = Integer.parseInt(value);
             thresholdMax = new Scalar(hMax, sMax, vMax);
-            visionPreferencesEditor.putInt("vMax", hMax);
+            visionPreferencesEditor.putInt("vMax", vMax);
         }
 
         else if (key.equals("minArea")) {
