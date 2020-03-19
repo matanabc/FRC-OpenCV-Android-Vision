@@ -15,16 +15,16 @@ import java.util.List;
 public class Consumer {
     private Mat threshold;
     private List<MatOfPoint> thresholdContours, contours;
-
-    private ArrayList<Rect> bound = new ArrayList<Rect>();
+    private PostConsumer postConsumer;
 
     public Consumer() {
         threshold = new Mat();
         thresholdContours = new ArrayList<MatOfPoint>();
         contours = new ArrayList<MatOfPoint>();
+        postConsumer = new PostConsumer();
     }
 
-    public Mat consume(Mat img) {
+    public Mat execute(Mat img) {
         Imgproc.cvtColor(img, threshold, Imgproc.COLOR_BGR2HSV); //Change from rgb to hsv
 
         threshold(threshold);
@@ -32,15 +32,7 @@ public class Consumer {
         findContours(threshold, thresholdContours);
         filterContours(thresholdContours, contours);
 
-        bound.clear();
-        for (int i = 0; i < contours.size(); i++) {
-            Imgproc.drawContours(img, contours, i, VisionConstant.GREEN);
-            Rect r = Imgproc.boundingRect(contours.get(i));
-            bound.add(r);
-            Imgproc.rectangle(img, r.tl(), r.br(), VisionConstant.RED);//printing
-        }
-
-        return VisionConstant.showHSV ? threshold : img;
+        return postConsumer.execute(threshold, img, contours);
     }
 
     private void threshold(Mat input) {

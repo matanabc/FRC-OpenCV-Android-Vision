@@ -10,6 +10,7 @@ public class VisionConstant {
     public static final Scalar WHITE = new Scalar(255, 255, 255);
     public static final Scalar RED = new Scalar(255, 0, 0);
     public static final Scalar GREEN = new Scalar(0, 255, 0);
+    public static final Scalar BLUE = new Scalar(0, 0, 255);
 
     public static boolean showHSV = false;
 
@@ -23,6 +24,8 @@ public class VisionConstant {
 
     public static Scalar thresholdMin = new Scalar(hMin, sMin, vMin), thresholdMax = new Scalar(hMax, sMax, vMax);
 
+    public static int numberTargetContours = 1;
+
     private static SharedPreferences visionPreferences;
     private static SharedPreferences.Editor visionPreferencesEditor;
 
@@ -31,6 +34,7 @@ public class VisionConstant {
         visionPreferencesEditor = visionPreferences.edit();
 
         showHSV = preferences.getBoolean("showHSV", false);
+        numberTargetContours = preferences.getInt("numberTargetContours", 1);
 
         hMin = preferences.getInt("hMin", 0);
         hMax = preferences.getInt("hMax", 255);
@@ -123,6 +127,11 @@ public class VisionConstant {
         else if (key.equals("showHSV")){
             showHSV = Boolean.parseBoolean(value);
             visionPreferencesEditor.putBoolean("showHSV", showHSV);
+        }
+
+        else if (key.equals("numberTargetContours")){
+            numberTargetContours = Integer.parseInt(value);
+            visionPreferencesEditor.putInt("numberTargetContours", numberTargetContours);
         }
 
         visionPreferencesEditor.commit();

@@ -113,7 +113,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     }
 
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        Mat img = consumer.consume(inputFrame.rgba());
+        Mat img = consumer.execute(inputFrame.rgba());
         Imgproc.putText(img, Util.getFPSCount(), new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE);
         MjpgServer.getInstance().sendMat(Util.mat2ByteArray(img));
         return img;
