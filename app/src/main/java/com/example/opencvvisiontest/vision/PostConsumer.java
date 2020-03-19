@@ -12,15 +12,25 @@ public class PostConsumer {
     public Mat execute(Mat threshold, Mat img, List<MatOfPoint> contours) {
         try {
             drawContours(img, contours);
-
             if (contours.size() == VisionConstant.numberTargetContours) {
                 drawTarget(img, contours);
             }
+            drawFrameCenter(img);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return VisionConstant.showHSV ? threshold : img;
+    }
+
+    public void drawFrameCenter(Mat img) {
+        double center_x = VisionConstant.MAX_FRAME_WIDTH / 2;
+        double center_y = VisionConstant.MAX_FRAME_HEIGHT / 2;
+
+        Imgproc.line(img, new Point(center_x, center_y + 10), new Point(center_x, center_y + 20), VisionConstant.GREEN, 2);
+        Imgproc.line(img, new Point(center_x, center_y - 10), new Point(center_x, center_y - 20), VisionConstant.GREEN, 2);
+        Imgproc.line(img, new Point(center_x + 10, center_y), new Point(center_x + 20, center_y), VisionConstant.GREEN, 2);
+        Imgproc.line(img, new Point(center_x - 10, center_y), new Point(center_x - 20, center_y), VisionConstant.GREEN, 2);
     }
 
     public void drawContours(Mat img, List<MatOfPoint> contours) {
@@ -50,7 +60,7 @@ public class PostConsumer {
         center_x = (x1 + x2) / 2;
         center_y = (y1 + y2) / 2;
 
-        Imgproc.rectangle(img, new Point(x1, y1), new Point(x2, y2), VisionConstant.BLUE, 3); //print the area from left point and the right point of the contor that he fond
+        Imgproc.rectangle(img, new Point(x1, y1), new Point(x2, y2), VisionConstant.BLUE, 2); //print the area from left point and the right point of the contor that he fond
         Imgproc.rectangle(img, new Point(center_x, center_y), new Point(center_x, center_y), VisionConstant.RED, 3); //print the centers
     }
 }
