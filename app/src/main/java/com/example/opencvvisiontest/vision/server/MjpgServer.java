@@ -35,8 +35,14 @@ public class MjpgServer {
         new SendStartServerTask().execute();
     }
 
+    private boolean sendLastTime = false;
     public void sendMat(byte[] buffer) {
-        new SendUpdateTask().execute(buffer);
+        if(sendLastTime){
+            sendLastTime = false;
+        } else {
+            new SendUpdateTask().execute(buffer);
+            sendLastTime = true;
+        }
     }
 
     private class SendStartServerTask extends AsyncTask<Void, Void, Void> {
