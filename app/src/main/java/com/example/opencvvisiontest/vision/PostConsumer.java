@@ -1,6 +1,6 @@
 package com.example.opencvvisiontest.vision;
 
-import com.example.opencvvisiontest.Util;
+import com.example.opencvvisiontest.vision.server.VisionDataServer;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -29,6 +29,7 @@ public class PostConsumer {
             e.printStackTrace();
         }
 
+        VisionDataServer.getInstance().sendData(contours.size() == VisionConstant.numberTargetContours, xError, yError);
         return VisionConstant.showHSV ? threshold : img;
     }
 

@@ -13,6 +13,7 @@ import com.example.opencvvisiontest.vision.Consumer;
 import com.example.opencvvisiontest.vision.VisionConstant;
 import com.example.opencvvisiontest.vision.server.MjpgServer;
 import com.example.opencvvisiontest.vision.server.VisionConstantServer;
+import com.example.opencvvisiontest.vision.server.VisionDataServer;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -21,7 +22,6 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
-import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
@@ -76,6 +76,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
             server = new VisionConstantServer(8888);
             Toast.makeText(getApplicationContext(), Util.getIPAddress(true), Toast.LENGTH_LONG).show();
             MjpgServer.getInstance().startServer();
+            VisionDataServer.getInstance().startServer();
         } catch (IOException e) {
             e.printStackTrace();
         }
