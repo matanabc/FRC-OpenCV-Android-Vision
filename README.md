@@ -1,4 +1,17 @@
 # FRC-OpenCV-Android-Vision
-FRC vision application on android device using openCV and camera2 API
+FRC vision application on android device using openCV and camera2 API (using JavaCamera2View)
 
-This application not working on all android devices and isn't down yet!
+### General
+ * this app trying to change camera exposure to low, it may not work in all the devices. the camera sittings can be found in openCV JavaCamera2View line 218.
+ * if you changing openCV version add openCV as a static data to jniLibs folder.
+
+### View should lock like for FRC teams
+![App view](/vision_test_screen_shoot.png)
+
+### Servers
+ * MjpgServer stream final mat (app view) to port 5800 in 15 FPS
+ * VisionConstantServer get request to change vision values to port 5801.
+ * VisionDataServer send string with vision data (isTargetValid;x;y => true;-1.326;3.25) to port 5802.
+
+## Contact
+If you have any question you can send me email: matanabc@gamil.com
