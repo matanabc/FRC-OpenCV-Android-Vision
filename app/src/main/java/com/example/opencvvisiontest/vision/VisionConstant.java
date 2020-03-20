@@ -30,6 +30,12 @@ public class VisionConstant {
 
     public static int numberTargetContours = 1;
 
+    public static double targetCenterXInFrame = MAX_FRAME_WIDTH / (double) 2;
+    public static double targetCenterYInFrame = MAX_FRAME_HEIGHT / (double) 2;
+
+    public static double pixel2AngleX = 65 / (double) MAX_FRAME_WIDTH;
+    public static double pixel2AngleY = 50 / (double) MAX_FRAME_HEIGHT;
+
     private static SharedPreferences visionPreferences;
     private static SharedPreferences.Editor visionPreferencesEditor;
 
