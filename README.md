@@ -1,5 +1,5 @@
 # FRC-OpenCV-Android-Vision
-FRC vision application on android device using openCV and camera2 API (using JavaCamera2View)
+FRC vision application on android device using openCV and camera2 API (openCV JavaCamera2View)
 
 ### General
  * this app trying to change camera exposure to low (image will be dark), it may not work in all the devices. the camera sittings can be found in openCV JavaCamera2View line 218
