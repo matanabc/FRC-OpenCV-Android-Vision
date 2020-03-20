@@ -7,8 +7,8 @@ import java.io.IOException;
 import fi.iki.elonen.NanoHTTPD;
 
 public class VisionConstantServer extends NanoHTTPD {
-    public VisionConstantServer(int port) throws IOException {
-        super(port);
+    public VisionConstantServer() throws IOException {
+        super(5801);
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
     }
 

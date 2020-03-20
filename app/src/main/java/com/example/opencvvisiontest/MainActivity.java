@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         try {
             VisionConstant.load(getSharedPreferences("vision", 0));
             consumer = new Consumer();
-            server = new VisionConstantServer(8888);
+            server = new VisionConstantServer();
             Toast.makeText(getApplicationContext(), Util.getIPAddress(true), Toast.LENGTH_LONG).show();
             MjpgServer.getInstance().startServer();
             VisionDataServer.getInstance().startServer();
