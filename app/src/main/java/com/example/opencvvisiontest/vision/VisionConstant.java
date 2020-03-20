@@ -67,6 +67,9 @@ public class VisionConstant {
         minHeight = Double.parseDouble(preferences.getString("minHeight", "0"));
         maxHeight = Double.parseDouble(preferences.getString("maxHeight", "100"));
 
+        pixel2AngleX = Double.parseDouble(preferences.getString("pixel2AngleX", String.valueOf(pixel2AngleX)));
+        pixel2AngleY = Double.parseDouble(preferences.getString("pixel2AngleY", String.valueOf(pixel2AngleY)));
+
         thresholdMin = new Scalar(hMin, sMin, vMin);
         thresholdMax = new Scalar(hMax, sMax, vMax);
     }
@@ -80,9 +83,7 @@ public class VisionConstant {
             hMax = Integer.parseInt(value);
             thresholdMax = new Scalar(hMax, sMax, vMax);
             visionPreferencesEditor.putInt("hMax", hMax);
-        }
-
-        else if (key.equals("sMin")) {
+        } else if (key.equals("sMin")) {
             sMin = Integer.parseInt(value);
             thresholdMin = new Scalar(hMin, sMin, vMin);
             visionPreferencesEditor.putInt("sMin", sMin);
@@ -90,9 +91,7 @@ public class VisionConstant {
             sMax = Integer.parseInt(value);
             thresholdMax = new Scalar(hMax, sMax, vMax);
             visionPreferencesEditor.putInt("sMax", sMax);
-        }
-
-        else if (key.equals("vMin")) {
+        } else if (key.equals("vMin")) {
             vMin = Integer.parseInt(value);
             thresholdMin = new Scalar(hMin, sMin, vMin);
             visionPreferencesEditor.putInt("vMin", vMin);
@@ -100,48 +99,42 @@ public class VisionConstant {
             vMax = Integer.parseInt(value);
             thresholdMax = new Scalar(hMax, sMax, vMax);
             visionPreferencesEditor.putInt("vMax", vMax);
-        }
-
-        else if (key.equals("minArea")) {
+        } else if (key.equals("minArea")) {
             minArea = Double.parseDouble(value);
             visionPreferencesEditor.putString("minArea", String.valueOf(minArea));
         } else if (key.equals("maxArea")) {
             maxArea = Double.parseDouble(value);
             visionPreferencesEditor.putString("maxArea", String.valueOf(maxArea));
-        }
-
-        else if (key.equals("minRatio")) {
+        } else if (key.equals("minRatio")) {
             minRatio = Double.parseDouble(value);
             visionPreferencesEditor.putString("minRatio", String.valueOf(minRatio));
         } else if (key.equals("maxRatio")) {
             maxRatio = Double.parseDouble(value);
             visionPreferencesEditor.putString("maxRatio", String.valueOf(maxRatio));
-        }
-
-        else if (key.equals("minWidth")) {
+        } else if (key.equals("minWidth")) {
             minWidth = Double.parseDouble(value);
             visionPreferencesEditor.putString("minWidth", String.valueOf(minWidth));
         } else if (key.equals("maxWidth")) {
             maxWidth = Double.parseDouble(value);
             visionPreferencesEditor.putString("maxWidth", String.valueOf(maxWidth));
-        }
-
-        else if (key.equals("minHeight")) {
+        } else if (key.equals("minHeight")) {
             minHeight = Double.parseDouble(value);
             visionPreferencesEditor.putString("minHeight", String.valueOf(minHeight));
         } else if (key.equals("maxHeight")) {
             maxHeight = Double.parseDouble(value);
             visionPreferencesEditor.putString("maxHeight", String.valueOf(maxHeight));
-        }
-
-        else if (key.equals("showHSV")){
+        } else if (key.equals("showHSV")) {
             showHSV = Boolean.parseBoolean(value);
             visionPreferencesEditor.putBoolean("showHSV", showHSV);
-        }
-
-        else if (key.equals("numberTargetContours")){
+        } else if (key.equals("numberTargetContours")) {
             numberTargetContours = Integer.parseInt(value);
             visionPreferencesEditor.putInt("numberTargetContours", numberTargetContours);
+        } else if (key.equals("AngleX")) {
+            pixel2AngleX = Double.parseDouble(value) / (double) MAX_FRAME_WIDTH;
+            visionPreferencesEditor.putString("pixel2AngleX", String.valueOf(pixel2AngleX));
+        } else if (key.equals("AngleY")) {
+            pixel2AngleY = Double.parseDouble(value) / (double) MAX_FRAME_HEIGHT;
+            visionPreferencesEditor.putString("pixel2AngleY", String.valueOf(pixel2AngleY));
         }
 
         visionPreferencesEditor.commit();
