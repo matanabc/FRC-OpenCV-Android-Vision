@@ -1,4 +1,4 @@
-package com.example.opencvvisiontest.vision;
+package com.example.visiondroid.vision;
 
 import android.content.SharedPreferences;
 

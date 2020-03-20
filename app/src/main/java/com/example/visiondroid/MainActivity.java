@@ -1,21 +1,20 @@
-package com.example.opencvvisiontest;
+package com.example.visiondroid;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.opencvvisiontest.vision.Consumer;
-import com.example.opencvvisiontest.vision.VisionConstant;
-import com.example.opencvvisiontest.vision.server.MjpgServer;
-import com.example.opencvvisiontest.vision.server.VisionConstantServer;
-import com.example.opencvvisiontest.vision.server.VisionDataServer;
+import com.example.visiondroid.vision.Consumer;
+import com.example.visiondroid.vision.VisionConstant;
+import com.example.visiondroid.vision.server.MjpgServer;
+import com.example.visiondroid.vision.server.VisionConstantServer;
+import com.example.visiondroid.vision.server.VisionDataServer;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;

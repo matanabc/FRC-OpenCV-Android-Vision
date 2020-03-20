@@ -1,19 +1,18 @@
-package com.example.opencvvisiontest.vision.server;
+package com.example.visiondroid.vision.server;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class MjpgServer {
-    public static final String K_BOUNDARY = "boundary";
-    private static MjpgServer sInst = null;
+public class VisionDataServer {
+    private static VisionDataServer sInst = null;
 
-    public static final String TAG = "MJPG";
+    public static final String TAG = "Vision Data Server";
 
     private ArrayList<Connection> mConnections = new ArrayList<>();
     private Object mLock = new Object();
@@ -21,55 +20,49 @@ public class MjpgServer {
     private boolean mRunning;
     private Thread mRunThread;
 
-    private MjpgServer() {
+    private VisionDataServer() {
     }
 
-    public static MjpgServer getInstance() {
+    public static VisionDataServer getInstance() {
         if (sInst == null) {
-            sInst = new MjpgServer();
+            sInst = new VisionDataServer();
         }
         return sInst;
     }
 
     public void startServer() {
-        new SendStartServerTask().execute();
+        new StartServerTask().execute();
     }
 
-    private boolean sendLastTime = false;
-    public void sendMat(byte[] buffer) {
-        if(sendLastTime){
-            sendLastTime = false;
-        } else {
-            new SendUpdateTask().execute(buffer);
-            sendLastTime = true;
-        }
+    public void sendData(boolean isTargetValid, double x, double y) {
+        new SendDataTask().execute(isTargetValid + ";" + x + ";" + y);
     }
 
-    private class SendStartServerTask extends AsyncTask<Void, Void, Void> {
+
+    private class StartServerTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                mServerSocket = new ServerSocket(5800);
+                mServerSocket = new ServerSocket(5802);
                 mRunning = true;
                 mRunThread = new Thread(runner);
                 mRunThread.start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
     }
 
-    private class SendUpdateTask extends AsyncTask<byte[], Void, Void> {
+    private class SendDataTask extends AsyncTask<String, Void, Void> {
         @Override
-        protected Void doInBackground(byte[]... params) {
-            update(params[0]);
+        protected Void doInBackground(String... params) {
+            sendData(params[0]);
             return null;
         }
     }
 
-    private void update(byte[] bytes) {
+    private void sendData(String data) {
         synchronized (mLock) {
             ArrayList<Integer> badIndices = new ArrayList<>(mConnections.size());
             for (int i = 0; i < mConnections.size(); i++) {
@@ -77,7 +70,7 @@ public class MjpgServer {
                 if (c == null || !c.isAlive()) {
                     badIndices.add(i);
                 } else {
-                    c.writeImageUpdate(bytes);
+                    c.sendData(data);
                 }
             }
             for (int i : badIndices) {
@@ -93,12 +86,11 @@ public class MjpgServer {
                 try {
                     Log.i(TAG, "Waiting for connections");
                     Socket s = mServerSocket.accept();
-                    Log.i("MjpgServer", "Got a socket: " + s);
+                    Log.i(TAG, "Got a socket: " + s);
                     Connection c = new Connection(s);
                     synchronized (mLock) {
                         mConnections.add(c);
                     }
-                    c.start();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -117,33 +109,10 @@ public class MjpgServer {
             return !mSocket.isClosed() && mSocket.isConnected();
         }
 
-        public void start() {
+        public void sendData(String data) {
             try {
-                Log.i(TAG, "Starting a connection!");
-                OutputStream stream = mSocket.getOutputStream();
-                stream.write(("HTTP/1.0 200 OK\r\n" +
-                        "Server: vision\r\n" +
-                        "Cache-Control: no-cache\r\n" +
-                        "Pragma: no-cache\r\n" +
-                        "Connection: close\r\n" +
-                        "Content-Type: multipart/x-mixed-replace;boundary=--" + K_BOUNDARY + "\r\n").getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void writeImageUpdate(byte[] buffer) {
-            if (!isAlive()) {
-                return;
-            }
-            try {
-                OutputStream stream = mSocket.getOutputStream();
-                stream.write(("\r\n--" + K_BOUNDARY + "\r\n").getBytes());
-                stream.write(("Content-type: image/jpeg\r\n" +
-                        "Content-Length: " + buffer.length + "\r\n" +
-                        "\r\n").getBytes());
-                stream.write(buffer);
-                stream.flush();
+                PrintWriter out = new PrintWriter(mSocket.getOutputStream(), true);
+                out.println(data);
             } catch (IOException e) {
                 // There is a broken pipe exception being thrown here I cannot figure out.
             }

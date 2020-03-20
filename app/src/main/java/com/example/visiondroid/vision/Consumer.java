@@ -1,6 +1,4 @@
-package com.example.opencvvisiontest.vision;
-
-import android.util.Log;
+package com.example.visiondroid.vision;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;

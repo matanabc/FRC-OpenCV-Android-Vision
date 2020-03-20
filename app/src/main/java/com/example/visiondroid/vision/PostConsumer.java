@@ -1,6 +1,6 @@
-package com.example.opencvvisiontest.vision;
+package com.example.visiondroid.vision;
 
-import com.example.opencvvisiontest.vision.server.VisionDataServer;
+import com.example.visiondroid.vision.server.VisionDataServer;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;

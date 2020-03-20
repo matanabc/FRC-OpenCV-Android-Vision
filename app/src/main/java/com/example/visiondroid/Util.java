@@ -1,4 +1,4 @@
-package com.example.opencvvisiontest;
+package com.example.visiondroid;
 
 import android.graphics.Bitmap;
 

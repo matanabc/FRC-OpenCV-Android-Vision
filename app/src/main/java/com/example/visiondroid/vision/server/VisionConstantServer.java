@@ -1,6 +1,6 @@
-package com.example.opencvvisiontest.vision.server;
+package com.example.visiondroid.vision.server;
 
-import com.example.opencvvisiontest.vision.VisionConstant;
+import com.example.visiondroid.vision.VisionConstant;
 
 import java.io.IOException;
 
