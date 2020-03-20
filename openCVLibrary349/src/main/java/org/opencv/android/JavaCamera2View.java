@@ -206,17 +206,17 @@ public class JavaCamera2View extends CameraBridgeViewBase {
                             }
                             mCaptureSession = cameraCaptureSession;
                             try {
-//                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
-//                                        CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-//                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
-//                                        CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+                                // Original camera sittings:
+                                // mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
+                                //CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+                                //mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
+                                //CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
 
-//                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_MODE_OFF);
+                                // my camera sittings:
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_OFF);
                                 mPreviewRequestBuilder.set(CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE, CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE_OFF);
                                 mPreviewRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, .2f);
                                 mPreviewRequestBuilder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 1000000L);
-
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_OFF);
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_DAYLIGHT);
