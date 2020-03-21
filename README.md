@@ -11,7 +11,7 @@ FRC vision application on android device using openCV and camera2 API (openCV Ja
 
 ### Servers
  * MjpgServer stream final mat (app view) to port 5800 in 15 FPS
- * VisionConstantServer get request to change vision values to port 5801 (you can use [config.py](client/config.py) to set HSV and filters values but change the url host request).
+ * VisionConstantServer get request to change vision values to port 5801, send a request from tour browser to <Phone-IP>:5801 to view the html vision value config.
  * VisionDataServer send string with vision data (isTargetValid;x;y => true;-0.711;-0.417) to port 5802 (you can use [client.py](client/client.py) to read vision data value but change the host).
 
 ## Contact
