@@ -7,11 +7,11 @@ FRC vision application on android device using openCV and camera2 API (openCV Ja
  * if you changing openCV version add all the folders in sdk\native\libs from your new openCV version to jniLibs folder
 
 ### View should look like for FRC teams after configuration
-![App view](/vision_test_screen_shoot.png)
+![App view](/images/vision_test_screen_shoot.png)
 
 ### Servers
  * MjpgServer stream final mat (app view) to port 5800 in 15 FPS
- * VisionConstantServer get request to change vision values to port 5801, send a request from tour browser to <Phone-IP>:5801 to view the html vision value config.
+ * VisionConstantServer get request to change vision values to port 5801, send a request from tour browser to <Phone-IP>:5801 to view the html vision value config (you can see vision config images [here](images/vision_config_pages) to read vision data value but change the host).
  * VisionDataServer send string with vision data (isTargetValid;x;y => true;-0.711;-0.417) to port 5802 (you can use [client.py](client/client.py) to read vision data value but change the host).
 
 ## Contact
