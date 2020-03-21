@@ -2,25 +2,51 @@ package com.example.visiondroid.vision.server;
 
 import com.example.visiondroid.vision.VisionConstant;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import fi.iki.elonen.NanoHTTPD;
 
 public class VisionConstantServer extends NanoHTTPD {
-    public VisionConstantServer() throws IOException {
+    private String visionConfigFile = "Failed to load vision config file";
+
+    public VisionConstantServer(InputStream visionConfigStream) throws IOException {
         super(5801);
+
+        try{
+            StringBuilder textBuilder = new StringBuilder();
+            Reader reader = new BufferedReader(new InputStreamReader(visionConfigStream, Charset.forName(StandardCharsets.UTF_8.name())));
+            int c = 0;
+            while ((c = reader.read()) != -1) {
+                textBuilder.append((char) c);
+            }
+
+            visionConfigFile = textBuilder.toString();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
     }
 
     @Override
     public Response serve(IHTTPSession session) {
-        Response response = newFixedLengthResponse(Response.Status.BAD_REQUEST, NanoHTTPD.MIME_HTML, "Something went wrong!");
+        Response response = newFixedLengthResponse(Response.Status.BAD_REQUEST, NanoHTTPD.MIME_HTML, "Bad request!");
         try {
-            if (session.getMethod() == Method.GET && session.getParameters().size() != 0) {
-                for (String key : session.getParameters().keySet()) {
-                    VisionConstant.update(key, session.getParameters().get(key).get(0));
+            if (session.getMethod() == Method.GET) {
+                if (session.getParameters().size() != 0) {
+                    for (String key : session.getParameters().keySet()) {
+                        VisionConstant.update(key, session.getParameters().get(key).get(0));
+                    }
+                    response = newFixedLengthResponse("Update!");
+                } else {
+                    response = newFixedLengthResponse(visionConfigFile);
                 }
-                response = newFixedLengthResponse("Update!");
             }
         } catch (Exception e) {
             response = newFixedLengthResponse(Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_HTML, "Something went wrong!");
