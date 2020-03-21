@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vision Config</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial;
+        }
+
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+
+        .slidecontainer {
+            width: 100%;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 25px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<!-- <body style="background-color:#202020; color: rgb(255, 255, 255);"> -->
+
+<body>
+<div style="float:left;width:calc(100% - 380px);">
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Config')">Config</button>
+        <button class="tablinks" onclick="openTab(event, 'HSV')">HSV</button>
+        <button class="tablinks" onclick="openTab(event, 'Filter')">Filter</button>
+    </div>
+
+    <div id="Config" class="tabcontent">
+        <form action="/action_page.php">
+            <label for="fname">Camera X angle</label>
+            <input type="text" id="xAngle"><br><br>
+            <label for="lname">Camera Y angle</label>
+            <input type="text" id="yAngle"><br><br>
+        </form>
+    </div>
+
+    <div id="HSV" class="tabcontent">
+        <div class="slidecontainer">
+            <p>H Min is:<span id="hMinText"></span> and H Max is:<span id="hMaxText"></span></p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="hMinSlider">
+            <input type="range" min="0" max="255" value="255" class="slider" id="hMaxSlider">
+        </div>
+        <div class="slidecontainer">
+            <p>S Min is:<span id="sMinText"></span> and S Max is:<span id="sMaxText"></span></p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="sMinSlider">
+            <input type="range" min="0" max="255" value="255" class="slider" id="sMaxSlider">
+        </div>
+
+        <div class="slidecontainer">
+            <p>V Min is:<span id="vMinText"></span> and V Max is:<span id="vMaxText"></span></p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="vMinSlider">
+            <input type="range" min="0" max="255" value="255" class="slider" id="vMaxSlider">
+        </div>
+    </div>
+
+    <div id="Filter" class="tabcontent">
+        <div class="slidecontainer">
+            <input type="range" min="0" max="255" value="0" class="slider" id="hMin">
+            <input type="range" min="0" max="255" value="255" class="slider" id="hMin">
+        </div>
+        <div class="slidecontainer">
+            <input type="range" min="0" max="255" value="0" class="slider" id="hMin">
+            <input type="range" min="0" max="255" value="255" class="slider" id="hMin">
+        </div>
+
+        <div class="slidecontainer">
+            <input type="range" min="0" max="255" value="0" class="slider" id="hMin">
+            <input type="range" min="0" max="255" value="255" class="slider" id="hMin">
+        </div>
+    </div>
+</div>
+
+<form style="float:right;width:350px">
+    <iframe bottom:="" frameborder="0" padding-="" scrolling="no" src="http://192.168.14.34:5800/" height="240"
+            width="320" scrolling="no"></iframe>
+    <button id="showHSV" type="button" onclick="showHSVFunction()" style="width:320px;">Show HSV</button>
+</form>
+
+<script>
+        sendValue("showHSV", false)
+
+        var hMinSlider = document.getElementById("hMinSlider");
+        var hMinText = document.getElementById("hMinText");
+        hMinText.innerHTML = hMinSlider.value;
+        hMinSlider.oninput = function () {
+            updateSlider(hMinText, this.value, "hMin")
+        }
+
+        var hMaxSlider = document.getElementById("hMaxSlider");
+        var hMaxText = document.getElementById("hMaxText");
+        hMaxText.innerHTML = hMaxSlider.value;
+        hMaxSlider.oninput = function () {
+            updateSlider(hMaxText, this.value, "hMax")
+        }
+
+        var sMinSlider = document.getElementById("sMinSlider");
+        var sMinText = document.getElementById("sMinText");
+        sMinText.innerHTML = sMinSlider.value;
+        sMinSlider.oninput = function () {
+            updateSlider(sMinText, this.value, "sMin")
+        }
+
+        var sMaxSlider = document.getElementById("sMaxSlider");
+        var sMaxText = document.getElementById("sMaxText");
+        sMaxText.innerHTML = sMaxSlider.value;
+        sMaxSlider.oninput = function () {
+            updateSlider(sMaxText, this.value, "sMax")
+        }
+
+        var vMinSlider = document.getElementById("vMinSlider");
+        var vMinText = document.getElementById("vMinText");
+        vMinText.innerHTML = vMinSlider.value;
+        vMinSlider.oninput = function () {
+            updateSlider(vMinText, this.value, "vMin")
+        }
+
+        var vMaxSlider = document.getElementById("vMaxSlider");
+        var vMaxText = document.getElementById("vMaxText");
+        vMaxText.innerHTML = vMaxSlider.value;
+        vMaxSlider.oninput = function () {
+            updateSlider(vMaxText, this.value, "vMax")
+        }
+
+        var xAngle = document.getElementById("xAngle");
+        xAngle.oninput = function () {
+            updateSlider(hMinText, this.value, "AngleX")
+        }
+
+        var yAngle = document.getElementById("yAngle");
+        yAngle.oninput = function () {
+            updateSlider(hMinText, this.value, "AngleY")
+        }
+
+        function updateSlider(object, value, name) {
+            object.innerHTML = value;
+            sendValue(name, value)
+        }
+
+        function sendValue(name, value) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", "http://192.168.14.34:5801/?" + name + "=" + value, true);
+            xmlHttp.send(null);
+        }
+
+        function showHSVFunction() {
+            var showHSV = document.getElementById("showHSV");
+            if ("Show HSV" === showHSV.innerHTML) {
+                showHSV.innerHTML = "Show original image"
+                sendValue("showHSV", true)
+            } else {
+                showHSV.innerHTML = "Show HSV"
+                sendValue("showHSV", false)
+            }
+        }
+
+        function openTab(evt, cityName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</body>
+
+</html>
