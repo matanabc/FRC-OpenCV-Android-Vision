@@ -23,6 +23,9 @@ public class PostConsumer {
             drawContours(img, contours);
             if (contours.size() == VisionConstant.numberTargetContours) {
                 drawTarget(img, contours);
+            } else {
+                xError = 0;
+                yError = 0;
             }
             drawFrameCenter(img);
         } catch (Exception e) {
