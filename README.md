@@ -10,8 +10,9 @@ FRC vision application on android device using openCV and camera2 API (openCV Ja
 ![App view](/images/vision_test_screen_shoot.png)
 
 ### Servers
+The servers will send value and responds only when the app is open and running on your phone! 
  * MjpgServer stream final mat (app view) to port 5800 in 15 FPS
- * VisionConstantServer get request to change vision values to port 5801, send a request from your browser to `<Phone-IP>:5801` will the app is open in your phone to view the HTML vision value config (you can see images of HTML vision config [here](images/vision_config_pages))
+ * VisionConstantServer get request to change vision values to port 5801, to view web vision value config send a request from your browser to `<Phone-IP>:5801` (you can see images of web vision config [here](images/vision_config_pages))
  * VisionDataServer send string with vision data (isTargetValid;x;y => true;-0.711;-0.417) to port 5802 (you can use [client.py](client/client.py) to read vision data value but change the host)
 
 ## Contact
