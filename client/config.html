@@ -99,6 +99,8 @@
             <input type="text" id="xAngle"><br><br>
             <label for="lname">Camera Y angle</label>
             <input type="text" id="yAngle"><br><br>
+            <label for="lname">Target number of contours</label>
+            <input type="text" id="numberTargetContours"><br><br>
         </form>
     </div>
 
@@ -197,6 +199,11 @@
         var yAngle = document.getElementById("yAngle");
         yAngle.oninput = function () {
             updateSlider(hMinText, this.value, "AngleY")
+        }
+
+        var numberTargetContours = document.getElementById("numberTargetContours");
+        numberTargetContours.oninput = function () {
+            updateSlider(hMinText, this.value, "numberTargetContours")
         }
 
         function updateSlider(object, value, name) {
