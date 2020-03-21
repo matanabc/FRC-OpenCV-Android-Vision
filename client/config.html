@@ -86,67 +86,76 @@
 <!-- <body style="background-color:#202020; color: rgb(255, 255, 255);"> -->
 
 <body>
-<div style="float:left;width:calc(100% - 380px);">
-    <div class="tab">
-        <button class="tablinks" onclick="openTab(event, 'Config')">Config</button>
-        <button class="tablinks" onclick="openTab(event, 'HSV')">HSV</button>
-        <button class="tablinks" onclick="openTab(event, 'Filter')">Filter</button>
+    <div style="float:left;width:calc(100% - 380px);">
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Config')">Config</button>
+            <button class="tablinks" onclick="openTab(event, 'HSV')">HSV</button>
+            <button class="tablinks" onclick="openTab(event, 'Filter')">Filter</button>
+        </div>
+
+        <div id="Config" class="tabcontent">
+            <form action="/action_page.php">
+                <label for="fname">Camera X angle</label>
+                <input type="text" id="xAngle"><br><br>
+                <label for="lname">Camera Y angle</label>
+                <input type="text" id="yAngle"><br><br>
+                <label for="lname">Target number of contours</label>
+                <input type="text" id="numberTargetContours"><br><br>
+            </form>
+        </div>
+
+        <div id="HSV" class="tabcontent">
+            <div class="slidecontainer">
+                <p>H Min is:<span id="hMinText"></span> and H Max is:<span id="hMaxText"></span></p>
+                <input type="range" min="0" max="255" value="0" class="slider" id="hMinSlider">
+                <input type="range" min="0" max="255" value="255" class="slider" id="hMaxSlider">
+            </div>
+            <div class="slidecontainer">
+                <p>S Min is:<span id="sMinText"></span> and S Max is:<span id="sMaxText"></span></p>
+                <input type="range" min="0" max="255" value="0" class="slider" id="sMinSlider">
+                <input type="range" min="0" max="255" value="255" class="slider" id="sMaxSlider">
+            </div>
+
+            <div class="slidecontainer">
+                <p>V Min is:<span id="vMinText"></span> and V Max is:<span id="vMaxText"></span></p>
+                <input type="range" min="0" max="255" value="0" class="slider" id="vMinSlider">
+                <input type="range" min="0" max="255" value="255" class="slider" id="vMaxSlider">
+            </div>
+        </div>
+
+        <div id="Filter" class="tabcontent">
+            <div class="slidecontainer">
+                <p>Area Min is:<span id="areaMinText"></span> and Area Max is:<span id="areaMaxText"></span></p>
+                <input type="range" min="0" max="100" value="0" class="slider" id="areaMinSlider">
+                <input type="range" min="0" max="100" value="100" class="slider" id="areaMaxSlider">
+            </div>
+            <div class="slidecontainer">
+                <p>Ratio Min is:<span id="ratioMinText"></span> and Ratio Max is:<span id="ratioMaxText"></span></p>
+                <input type="range" min="0" max="255" value="0" class="slider" id="ratioMinSlider">
+                <input type="range" min="0" max="255" value="255" class="slider" id="ratioMaxSlider">
+            </div>
+
+            <div class="slidecontainer">
+                <p>Width Min is:<span id="widthMinText"></span> and Width Max is:<span id="widthMaxText"></span></p>
+                <input type="range" min="0" max="100" value="0" class="slider" id="widthMinSlider">
+                <input type="range" min="0" max="100" value="100" class="slider" id="widthMaxSlider">
+            </div>
+
+            <div class="slidecontainer">
+                <p>Height Min is:<span id="heightMinText"></span> and Height Max is:<span id="heightMaxText"></span></p>
+                <input type="range" min="0" max="100" value="0" class="slider" id="heightMinSlider">
+                <input type="range" min="0" max="100" value="100" class="slider" id="heightMaxSlider">
+            </div>
+        </div>
     </div>
 
-    <div id="Config" class="tabcontent">
-        <form action="/action_page.php">
-            <label for="fname">Camera X angle</label>
-            <input type="text" id="xAngle"><br><br>
-            <label for="lname">Camera Y angle</label>
-            <input type="text" id="yAngle"><br><br>
-            <label for="lname">Target number of contours</label>
-            <input type="text" id="numberTargetContours"><br><br>
-        </form>
-    </div>
-
-    <div id="HSV" class="tabcontent">
-        <div class="slidecontainer">
-            <p>H Min is:<span id="hMinText"></span> and H Max is:<span id="hMaxText"></span></p>
-            <input type="range" min="0" max="255" value="0" class="slider" id="hMinSlider">
-            <input type="range" min="0" max="255" value="255" class="slider" id="hMaxSlider">
-        </div>
-        <div class="slidecontainer">
-            <p>S Min is:<span id="sMinText"></span> and S Max is:<span id="sMaxText"></span></p>
-            <input type="range" min="0" max="255" value="0" class="slider" id="sMinSlider">
-            <input type="range" min="0" max="255" value="255" class="slider" id="sMaxSlider">
-        </div>
-
-        <div class="slidecontainer">
-            <p>V Min is:<span id="vMinText"></span> and V Max is:<span id="vMaxText"></span></p>
-            <input type="range" min="0" max="255" value="0" class="slider" id="vMinSlider">
-            <input type="range" min="0" max="255" value="255" class="slider" id="vMaxSlider">
-        </div>
-    </div>
-
-    <div id="Filter" class="tabcontent">
-        <div class="slidecontainer">
-            <input type="range" min="0" max="255" value="0" class="slider" id="hMin">
-            <input type="range" min="0" max="255" value="255" class="slider" id="hMin">
-        </div>
-        <div class="slidecontainer">
-            <input type="range" min="0" max="255" value="0" class="slider" id="hMin">
-            <input type="range" min="0" max="255" value="255" class="slider" id="hMin">
-        </div>
-
-        <div class="slidecontainer">
-            <input type="range" min="0" max="255" value="0" class="slider" id="hMin">
-            <input type="range" min="0" max="255" value="255" class="slider" id="hMin">
-        </div>
-    </div>
-</div>
-
-<form style="float:right;width:350px">
-    <iframe bottom:="" frameborder="0" padding-="" scrolling="no" src="http://192.168.14.34:5800/" height="240"
+    <form style="float:right;width:350px">
+        <iframe bottom:="" frameborder="0" padding-="" scrolling="no" src="http://192.168.14.34:5800/" height="240"
             width="320" scrolling="no"></iframe>
-    <button id="showHSV" type="button" onclick="showHSVFunction()" style="width:320px;">Show HSV</button>
-</form>
+        <button id="showHSV" type="button" onclick="showHSVFunction()" style="width:320px;">Show HSV</button>
+    </form>
 
-<script>
+    <script>
         sendValue("showHSV", false)
 
         var hMinSlider = document.getElementById("hMinSlider");
@@ -191,6 +200,61 @@
             updateSlider(vMaxText, this.value, "vMax")
         }
 
+        var areaMinSlider = document.getElementById("areaMinSlider");
+        var areaMinText = document.getElementById("areaMinText");
+        areaMinText.innerHTML = areaMinSlider.value;
+        areaMinSlider.oninput = function () {
+            updateSlider(areaMinText, this.value, "minArea")
+        }
+
+        var areaMaxSlider = document.getElementById("areaMaxSlider");
+        var areaMaxText = document.getElementById("areaMaxText");
+        areaMaxText.innerHTML = areaMaxSlider.value;
+        areaMaxSlider.oninput = function () {
+            updateSlider(areaMaxText, this.value, "maxArea")
+        }
+
+        var ratioMinSlider = document.getElementById("ratioMinSlider");
+        var ratioMinText = document.getElementById("ratioMinText");
+        ratioMinText.innerHTML = ratioMinSlider.value;
+        ratioMinSlider.oninput = function () {
+            updateSlider(ratioMinText, this.value, "minRatio")
+        }
+        var ratioMaxSlider = document.getElementById("ratioMaxSlider");
+        var ratioMaxText = document.getElementById("ratioMaxText");
+        ratioMaxText.innerHTML = ratioMaxSlider.value;
+        ratioMaxSlider.oninput = function () {
+            updateSlider(ratioMaxText, this.value, "maxRatio")
+        }
+
+        var widthMinSlider = document.getElementById("widthMinSlider");
+        var widthMinText = document.getElementById("widthMinText");
+        widthMinText.innerHTML = widthMinSlider.value;
+        widthMinSlider.oninput = function () {
+            updateSlider(widthMinText, this.value, "minWidth")
+        }
+
+        var widthMaxSlider = document.getElementById("widthMaxSlider");
+        var widthMaxText = document.getElementById("widthMaxText");
+        widthMaxText.innerHTML = widthMaxSlider.value;
+        widthMaxSlider.oninput = function () {
+            updateSlider(widthMaxText, this.value, "maxWidth")
+        }
+
+        var heightMinSlider = document.getElementById("heightMinSlider");
+        var heightMinText = document.getElementById("heightMinText");
+        heightMinText.innerHTML = heightMinSlider.value;
+        heightMinSlider.oninput = function () {
+            updateSlider(heightMinText, this.value, "minHeight")
+        }
+
+        var heightMaxSlider = document.getElementById("heightMaxSlider");
+        var heightMaxText = document.getElementById("heightMaxText");
+        heightMaxText.innerHTML = heightMaxSlider.value;
+        heightMaxSlider.oninput = function () {
+            updateSlider(heightMaxText, this.value, "maxHeight")
+        }
+
         var xAngle = document.getElementById("xAngle");
         xAngle.oninput = function () {
             updateSlider(hMinText, this.value, "AngleX")
@@ -206,17 +270,6 @@
             updateSlider(hMinText, this.value, "numberTargetContours")
         }
 
-        function updateSlider(object, value, name) {
-            object.innerHTML = value;
-            sendValue(name, value)
-        }
-
-        function sendValue(name, value) {
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", "http://192.168.14.34:5801/?" + name + "=" + value, true);
-            xmlHttp.send(null);
-        }
-
         function showHSVFunction() {
             var showHSV = document.getElementById("showHSV");
             if ("Show HSV" === showHSV.innerHTML) {
@@ -226,6 +279,21 @@
                 showHSV.innerHTML = "Show HSV"
                 sendValue("showHSV", false)
             }
+        }
+
+        function updateSlider(object, value, name) {
+            object.innerHTML = value;
+            sendValue(name, value)
+        }
+
+        function sendValue(name, value) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", getHost() + "/?" + name + "=" + value, true);
+            xmlHttp.send(null);
+        }
+
+        function getHost() {
+            return window.location.hostname ? window.location.hostname : "http://192.168.14.34:5801"
         }
 
         function openTab(evt, cityName) {
