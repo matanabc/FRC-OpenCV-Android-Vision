@@ -61,7 +61,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.tutorial1_activity_java_surface_view);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
-        mOpenCvCameraView.setMaxFrameSize(320, 240);
+        mOpenCvCameraView.setMaxFrameSize(VisionConstant.MAX_FRAME_WIDTH, VisionConstant.MAX_FRAME_HEIGHT);
         mOpenCvCameraView.enableView();
         OpenCVLoader.initDebug();
 
