@@ -9,9 +9,10 @@ FRC vision application on android device using openCV and camera2 API (openCV Ja
 ### View should look like for FRC teams after configuration
 ![App view](/images/vision_test_screen_shoot.png)
 you can also see [here](images/frc_2020_filed_home) 2020 field target images
-## General
- * Draw phone battery level
- * Draw FPS
+## Draws on screen
+ * phone battery level
+ * FPS
+ * Don't have connection (no one is reading vision data)
  * Counters, Target and target error 
 
 ### Servers
