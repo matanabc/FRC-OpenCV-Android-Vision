@@ -8,6 +8,7 @@ FRC vision application on android device using openCV and camera2 API (openCV Ja
 
 ### View should look like for FRC teams after configuration
 ![App view](/images/vision_test_screen_shoot.png)
+you can also see [here](images/frc_2020_filed_home) 2020 field target images
 
 ### Servers
 The servers will send value and responds only when the app is open and running on your phone! 
