@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -21,13 +20,10 @@ import com.example.visiondroid.vision.server.MjpgServer;
 import com.example.visiondroid.vision.server.VisionConstantServer;
 import com.example.visiondroid.vision.server.VisionDataServer;
 
-import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
@@ -35,7 +31,6 @@ import java.io.IOException;
 import androidx.core.app.ActivityCompat;
 
 public class MainActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
-    private static final String TAG = "OCVSample::Activity";
     private CameraBridgeViewBase mOpenCvCameraView;
 
     private VisionConstantServer server;
@@ -48,31 +43,12 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         }
     };
 
-
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                    Log.i(TAG, "OpenCV loaded successfully");
-                    mOpenCvCameraView.enableView();
-                }
-                break;
-                default: {
-                    super.onManagerConnected(status);
-                }
-                break;
-            }
-        }
-    };
-
     /**
      * Called when the activity is first created.
      */
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -85,8 +61,8 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.tutorial1_activity_java_surface_view);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
-
         mOpenCvCameraView.setMaxFrameSize(320, 240);
+        mOpenCvCameraView.enableView();
         OpenCVLoader.initDebug();
 
         try {
@@ -102,7 +78,8 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     }
 
     @Override
-    public void onBackPressed() {   }
+    public void onBackPressed() {
+    }
 
     @Override
     public void onPause() {
@@ -113,13 +90,6 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     @Override
     public void onResume() {
         super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_4_0, this, mLoaderCallback);
-        } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
     }
 
     public void onDestroy() {
@@ -135,12 +105,15 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     }
 
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
+        // processing image
         Mat img = consumer.execute(inputFrame.rgba());
-        Imgproc.putText(img, batteryLevel + "%", VisionConstant.BATTERY_LEVEL_POINT, Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame phone battery level
-        Imgproc.putText(img, Util.getFPSCount(), VisionConstant.FPS_POINT, Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame FPS
-        if (!VisionDataServer.getInstance().isHaveConnection())
-            Imgproc.putText(img, "Don't Have Connection!", VisionConstant.HAVE_CONNECTION_POINT, Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame if have connection
+
+        // draw on frame phone battery level and FPS
+        Imgproc.putText(img, batteryLevel + "%", VisionConstant.BATTERY_LEVEL_POINT, Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE);
+        Imgproc.putText(img, Util.getFPSCount(), VisionConstant.FPS_POINT, Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE);
+
         MjpgServer.getInstance().sendMat(Util.mat2ByteArray(img));
+
         return img;
     }
 }
