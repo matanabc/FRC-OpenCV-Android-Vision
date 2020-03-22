@@ -3,6 +3,10 @@ package com.example.visiondroid;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +39,14 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
 
     private VisionConstantServer server;
     private Consumer consumer;
+
+    private static int batteryLevel = 0;
+    private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
+        public void onReceive(Context arg0, Intent intent) {
+            batteryLevel = intent.getIntExtra("level", 0);
+        }
+    };
+
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -76,6 +88,8 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         OpenCVLoader.initDebug();
 
         try {
+            this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
             VisionConstant.load(getSharedPreferences("vision", 0));
             consumer = new Consumer();
             server = new VisionConstantServer(getAssets().open("vision_config.html"));
@@ -120,7 +134,8 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
 
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat img = consumer.execute(inputFrame.rgba());
-        Imgproc.putText(img, Util.getFPSCount(), new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE);
+        Imgproc.putText(img, batteryLevel + "%", new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame phone battery level
+        Imgproc.putText(img, Util.getFPSCount(), new Point(5, 30), Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame FPS
         MjpgServer.getInstance().sendMat(Util.mat2ByteArray(img));
         return img;
     }
