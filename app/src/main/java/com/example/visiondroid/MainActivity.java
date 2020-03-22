@@ -3,6 +3,7 @@ package com.example.visiondroid;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -101,10 +102,12 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     }
 
     @Override
+    public void onBackPressed() {   }
+
+    @Override
     public void onPause() {
         super.onPause();
-        if (mOpenCvCameraView != null)
-            mOpenCvCameraView.disableView();
+        ((ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE)).moveTaskToFront(getTaskId(), 0);
     }
 
     @Override
