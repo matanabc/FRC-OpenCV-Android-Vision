@@ -2,6 +2,7 @@ package com.example.visiondroid.vision;
 
 import android.content.SharedPreferences;
 
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 
 import java.io.IOException;
@@ -11,6 +12,10 @@ public class VisionConstant {
     public static final Scalar RED = new Scalar(255, 0, 0);
     public static final Scalar GREEN = new Scalar(0, 255, 0);
     public static final Scalar BLUE = new Scalar(0, 0, 255);
+
+    public static final Point BATTERY_LEVEL_POINT = new Point(5, 15);
+    public static final Point FPS_POINT = new Point(5, 30);
+    public static final Point HAVE_CONNECTION_POINT = new Point(5, 45);
 
     public static final int MAX_FRAME_WIDTH = 320;
     public static final int MAX_FRAME_HEIGHT = 240;

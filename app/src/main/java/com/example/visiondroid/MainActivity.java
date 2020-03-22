@@ -77,6 +77,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
 
         setContentView(R.layout.activity_main);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
 
@@ -88,8 +89,6 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
         OpenCVLoader.initDebug();
 
         try {
-            this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
             VisionConstant.load(getSharedPreferences("vision", 0));
             consumer = new Consumer();
             server = new VisionConstantServer(getAssets().open("vision_config.html"));
@@ -134,8 +133,10 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
 
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat img = consumer.execute(inputFrame.rgba());
-        Imgproc.putText(img, batteryLevel + "%", new Point(5, 15), Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame phone battery level
-        Imgproc.putText(img, Util.getFPSCount(), new Point(5, 30), Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame FPS
+        Imgproc.putText(img, batteryLevel + "%", VisionConstant.BATTERY_LEVEL_POINT, Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame phone battery level
+        Imgproc.putText(img, Util.getFPSCount(), VisionConstant.FPS_POINT, Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame FPS
+        if (!VisionDataServer.getInstance().isHaveConnection())
+            Imgproc.putText(img, "Don't Have Connection!", VisionConstant.HAVE_CONNECTION_POINT, Core.FONT_HERSHEY_PLAIN, 1, VisionConstant.WHITE); // draw on frame if have connection
         MjpgServer.getInstance().sendMat(Util.mat2ByteArray(img));
         return img;
     }

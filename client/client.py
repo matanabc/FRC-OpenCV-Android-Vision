@@ -1,23 +1,16 @@
+#!/usr/bin/env python3
+
 import socket
-from time import sleep
+import time
 
-HOST = '192.168.14.34'
-PORT = 5802 
+HOST = '192.168.14.34'  # The server's hostname or IP address
+PORT = 5802        # The port used by the server
 
-while True:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        try:
-            print("trying to connect to server!")
-            s.connect((HOST, PORT))
-            while True:
-                data = s.recv(1024).decode()
-                if len(data) == 0:
-                    print("connection close!")
-                    break
-                
-                data = data.split(";")
-                print(f"Target is valid: {data[0]}  X error: {data[1]}  Y error: {data[2]}")
-                sleep(0.1)
-        except:
-            pass
-
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    
+    while True:
+        data = s.recv(1024)
+        print("recev data:" + data.decode())
+        time.sleep(1 / float(30)) 
+        

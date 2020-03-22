@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,6 +39,9 @@ public class VisionDataServer {
         new SendDataTask().execute(isTargetValid + ";" + x + ";" + y);
     }
 
+    public boolean isHaveConnection(){
+        return mConnections.size() > 0;
+    }
 
     private class StartServerTask extends AsyncTask<Void, Void, Void> {
         @Override
@@ -111,8 +115,7 @@ public class VisionDataServer {
 
         public void sendData(String data) {
             try {
-                PrintWriter out = new PrintWriter(mSocket.getOutputStream(), true);
-                out.println(data);
+                new PrintWriter(mSocket.getOutputStream(), true).println(data);
             } catch (IOException e) {
                 // There is a broken pipe exception being thrown here I cannot figure out.
             }
