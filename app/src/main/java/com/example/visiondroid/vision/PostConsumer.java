@@ -27,11 +27,11 @@ public class PostConsumer {
                 xError = 0;
                 yError = 0;
             }
-            drawFrameCenter(img);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        drawFrameCenter(img);
         VisionDataServer.getInstance().sendData(contours.size() == VisionConstant.numberTargetContours, xError, yError);
         return VisionConstant.showHSV ? threshold : img;
     }
