@@ -95,11 +95,11 @@
 
         <div id="Config" class="tabcontent">
             <form action="/action_page.php">
-                <label for="fname">Camera X angle</label>
+                <label for="xAngle">Camera X angle</label>
                 <input type="text" id="xAngle"><br><br>
-                <label for="lname">Camera Y angle</label>
+                <label for="yAngle">Camera Y angle</label>
                 <input type="text" id="yAngle"><br><br>
-                <label for="lname">Target number of contours</label>
+                <label for="numberTargetContours">Target number of contours</label>
                 <input type="text" id="numberTargetContours"><br><br>
             </form>
         </div>
@@ -150,13 +150,14 @@
     </div>
 
     <form style="float:right;width:350px">
-        <iframe bottom:="" frameborder="0" padding-="" scrolling="no" src="http://192.168.14.34:5800/" height="240"
+        <iframe id="visionIFrame" frameborder="0" padding-="" scrolling="no" src="http://192.168.14.34:5800/" height="240"
             width="320" scrolling="no"></iframe>
         <button id="showHSV" type="button" onclick="showHSVFunction()" style="width:320px;">Show HSV</button>
     </form>
 
     <script>
         sendValue("showHSV", false)
+        document.getElementById("visionIFrame").setAttribute('src', "http://" + window.location.hostname + ":5800")
 
         var hMinSlider = document.getElementById("hMinSlider");
         var hMinText = document.getElementById("hMinText");
