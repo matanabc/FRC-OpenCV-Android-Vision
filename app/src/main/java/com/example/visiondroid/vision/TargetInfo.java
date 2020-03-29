@@ -21,7 +21,7 @@ public class TargetInfo {
     public TargetInfo(MatOfPoint... contours) {
         isValid = contours.length > 0;
         if (isValid) {
-            for (int i = 1; i < contours.length; i++) {
+            for (int i = 0; i < contours.length; i++) {
                 calculateTargetPoint(contours[i]);
             }
 

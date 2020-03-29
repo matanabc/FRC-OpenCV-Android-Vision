@@ -68,10 +68,9 @@ public class PostConsumer {
     }
 
     /**
-     * NEED TO CHECK THIS FUNCTION!!!
      * This function will take the center parse of FRC 2019 target.
      *
-     * @param img to draw on
+     * @param img      to draw on
      * @param contours that found
      */
     private void calculate2019TargetInfo(Mat img, List<MatOfPoint> contours) {
