@@ -30,6 +30,7 @@ public class VisionConstant {
     public static double minRatio = 0, maxRatio = 100;
     public static double minWidth = 0, maxWidth = 100;
     public static double minHeight = 0, maxHeight = 100;
+    public static double minSolidity = 0, maxSolidity = 100;
 
     public static Scalar thresholdMin = new Scalar(hMin, sMin, vMin), thresholdMax = new Scalar(hMax, sMax, vMax);
 
@@ -71,6 +72,9 @@ public class VisionConstant {
 
         minHeight = Double.parseDouble(preferences.getString("minHeight", "0"));
         maxHeight = Double.parseDouble(preferences.getString("maxHeight", "100"));
+
+        minSolidity = Double.parseDouble(preferences.getString("minSolidity", "0"));
+        maxSolidity = Double.parseDouble(preferences.getString("maxSolidity", "100"));
 
         pixel2AngleX = Double.parseDouble(preferences.getString("pixel2AngleX", String.valueOf(pixel2AngleX)));
         pixel2AngleY = Double.parseDouble(preferences.getString("pixel2AngleY", String.valueOf(pixel2AngleY)));
@@ -128,6 +132,12 @@ public class VisionConstant {
         } else if (key.equals("maxHeight")) {
             maxHeight = Double.parseDouble(value);
             visionPreferencesEditor.putString("maxHeight", String.valueOf(maxHeight));
+        } else if (key.equals("minSolidity")) {
+            minSolidity = Double.parseDouble(value);
+            visionPreferencesEditor.putString("minSolidity", String.valueOf(minSolidity));
+        } else if (key.equals("maxSolidity")) {
+            maxSolidity = Double.parseDouble(value);
+            visionPreferencesEditor.putString("maxSolidity", String.valueOf(maxSolidity));
         } else if (key.equals("showHSV")) {
             showHSV = Boolean.parseBoolean(value);
             visionPreferencesEditor.putBoolean("showHSV", showHSV);

@@ -136,6 +136,12 @@
             </div>
 
             <div class="slidecontainer">
+                <p>Solidity Min is:<span id="solidityMinText"></span> and Solidity Max is:<span id="solidityMaxText"></span></p>
+                <input type="range" min="0" max="100" value="0" class="slider" id="solidityMinSlider">
+                <input type="range" min="0" max="100" value="100" class="slider" id="solidityMaxSlider">
+            </div>
+
+            <div class="slidecontainer">
                 <p>Width Min is:<span id="widthMinText"></span> and Width Max is:<span id="widthMaxText"></span></p>
                 <input type="range" min="0" max="100" value="0" class="slider" id="widthMinSlider">
                 <input type="range" min="0" max="100" value="100" class="slider" id="widthMaxSlider">
@@ -225,6 +231,19 @@
         ratioMaxText.innerHTML = ratioMaxSlider.value;
         ratioMaxSlider.oninput = function () {
             updateSlider(ratioMaxText, this.value, "maxRatio")
+        }
+
+        var solidityMinSlider = document.getElementById("solidityMinSlider");
+        var solidityMinText = document.getElementById("solidityMinText");
+        solidityMinText.innerHTML = solidityMinSlider.value;
+        solidityMinSlider.oninput = function () {
+            updateSlider(solidityMinText, this.value, "minSolidity")
+        }
+        var solidityMaxSlider = document.getElementById("solidityMaxSlider");
+        var solidityMaxText = document.getElementById("solidityMaxText");
+        solidityMaxText.innerHTML = solidityMaxSlider.value;
+        solidityMaxSlider.oninput = function () {
+            updateSlider(solidityMaxText, this.value, "maxSolidity")
         }
 
         var widthMinSlider = document.getElementById("widthMinSlider");
