@@ -1,6 +1,9 @@
 package com.example.visiondroid.vision;
 
+import android.util.Log;
+
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
@@ -58,11 +61,11 @@ public class Consumer {
     private void findContours(Mat input, List<MatOfPoint> contours) {
         Mat hierarchy = new Mat();
         contours.clear();
-        Imgproc.findContours(input, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(input, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_TC89_KCOS);
     }
 
     private void filterContours(List<MatOfPoint> inputContours, List<MatOfPoint> output) {
-        final MatOfInt hull = new MatOfInt();
+        MatOfInt hull = new MatOfInt();
         output.clear();
 
         for (int i = 0; i < inputContours.size(); i++) {
@@ -79,6 +82,17 @@ public class Consumer {
 
             final double ratio = width / height * 100;
             if (ratio < VisionConstant.minRatio || ratio > VisionConstant.maxRatio) continue;
+
+            Imgproc.convexHull(contour, hull);
+            MatOfPoint mopHull = new MatOfPoint();
+            mopHull.create((int) hull.size().height, 1, CvType.CV_32SC2);
+            for (int j = 0; j < hull.size().height; j++) {
+                int index = (int) hull.get(j, 0)[0];
+                double[] point = new double[] { contour.get(index, 0)[0], contour.get(index, 0)[1] };
+                mopHull.put(j, 0, point);
+            }
+            final double solidity = area / (Imgproc.contourArea(mopHull) / (VisionConstant.MAX_FRAME_SIZE) * 100) * 100;
+            if (solidity < VisionConstant.minSolidity || ratio > VisionConstant.maxSolidity) continue;
 
             output.add(contour);
         }
